@@ -23,17 +23,18 @@ if __name__ == "__main__":
 		# Place final output data into list
 		endpoint_output.append([key, 
 			len(endpoint_data[key]),
-			pocket.pocketparse.mean(endpoint_data[key], 2),
-			pocket.pocketparse.median(endpoint_data[key], 2),
-			pocket.pocketparse.mode(endpoint_data[key], 2)[0],
+			str(pocket.pocketparse.mean(endpoint_data[key], 2)) + "ms",
+			str(pocket.pocketparse.median(endpoint_data[key], 2)) + "ms",
+			str(pocket.pocketparse.mode(endpoint_data[key], 2)[0]) + "ms",
 			pocket.pocketparse.mode(endpoint_data[key], 3)[0]
 		])
 
 	if args.output == 'text':
 		# pretty print table header
-		endpoint_output.insert(0, ["endpoint", "times called", "mean(resp. time)", "median(resp. time)", "mode(resp. time)", "dyno resp. most"])
+		endpoint_output.insert(0, ["endpoint", "no. of times called", "resp. times (mean)", "(median)", "(mode)", "dyno responding most"])
 		# pretty print table data
 		pocket.pocketprint.pprint_table(sys.stdout, endpoint_output)
 	else:
 		# print json
-		print json.dumps(endpoint_output)
+		json = json.dumps(endpoint_output)
+		print '{"data":' + json + '}'
